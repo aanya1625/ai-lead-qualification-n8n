@@ -1,0 +1,816 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "user registration form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": " name",
+              "placeholder": "provide  name."
+            },
+            {
+              "fieldLabel": "company"
+            },
+            {
+              "fieldLabel": "email ",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -272,
+        -80
+      ],
+      "id": "a7d8c63d-fb48-4f1a-85dd-a3fef7a8d684",
+      "name": "On form submission",
+      "webhookId": "27c6952e-4994-454a-b027-d2a1c5db275a"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU",
+          "mode": "list",
+          "cachedResultName": "USER INFORMATION",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " name",
+              "displayName": " name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email ",
+              "displayName": "email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -80
+      ],
+      "id": "1ec66257-599a-49b2-9605-bf5717cf9315",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "laWQnEmfWIqDlEO1",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are an AI lead qualification assistant.\n\nAnalyze the following customer lead.\n\nName: {{ $json.Name }}\nEmail: {{ $json.Email }}\nCompany: {{ $json.Company }}\nMessage: {{ $json.Message }}\n\nScore the lead from 0 to 100.\n\nClassification:\nHIGH = 70-100\nMEDIUM = 40-69\nLOW = 0-39\n\nReturn ONLY valid JSON.\nDo not use markdown.\nDo not use code blocks.\nDo not add explanations.\n\nReturn exactly this structure:\n\n{\n  \"lead_score\": 85,\n  \"category\": \"HIGH\",\n  \"intent\": \"Interested in AI automation services\",\n  \"recommended_action\": \"Contact the lead immediately\"\n}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        144,
+        -80
+      ],
+      "id": "41ad5268-3709-44f3-b983-dd3e96e31621",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        32,
+        128
+      ],
+      "id": "c247e23a-5600-482d-b1a8-02646dd82671",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "iGkcAGmARXZFiW6l",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const result = JSON.parse($json.text);\n\nreturn [\n  {\n    json: {\n      lead_score: result.lead_score,\n      category: result.category,\n      intent: result.intent,\n      recommended_action: result.recommended_action\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -80
+      ],
+      "id": "31abb368-3f1f-499e-bece-395cc43a7977",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "HIGH",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c6ec54c4-4ca6-4ee0-be9f-98e60bb3b859"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HIGH"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b1289dc7-ef74-4cbb-a822-aa0b8d12468f",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "MEDIUM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MEDIUM"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "80548384-3ef8-455f-acd7-1806fd0eb3af",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "LOW",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "LOW"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        -80
+      ],
+      "id": "48ea574c-ef54-458f-aa65-9446cda27413",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['email '] }}",
+        "subject": "Let's discuss your automation requirements",
+        "message": "=<p>Hi{{ $('On form submission').item.json[' name'] }} ,</p>\n\n<p>Thank you for reaching out to us.</p>\n\n<p>We reviewed your requirements and would love to learn more about your business needs and discuss how automation can help your team.</p>\n\n<p>Based on your enquiry, our team would like to schedule a brief discussion to understand your requirements in more detail.</p>\n\n<p>Please reply to this email with a convenient time for a quick call.</p>\n\n<p>Best regards,<br>\nAI Automation Team</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        -80
+      ],
+      "id": "23edd7e0-cce1-4672-bd33-88e193a3edc8",
+      "name": "Send a message",
+      "webhookId": "85356055-51c5-4a43-878d-484237618c75",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "as9gtJdT9jN4KLWP",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        -80
+      ],
+      "id": "0be1956f-967b-4b87-8386-5fcfa33d5f5d",
+      "name": "Wait",
+      "webhookId": "58039145-53f1-40f5-a15d-df2fbeb32e12"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "filters": {
+          "sender": "={{ $('On form submission').item.json['email '] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        -80
+      ],
+      "id": "51348968-ef27-46fb-9cc9-9c2725036909",
+      "name": "Get many messages",
+      "webhookId": "7af6683f-9b0a-4348-81b5-df9e8b87fef2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "as9gtJdT9jN4KLWP",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b592369f-09c2-4c6a-87b0-817c4491ca2f",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1536,
+        -80
+      ],
+      "id": "8c26b5ab-8b62-490a-bb52-bc3e5c2dabf9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['email '] }}",
+        "subject": "Following up on your automation enquiry",
+        "message": "=<p>Hi {{ $('On form submission').item.json[' name'] }} ,</p>\n\n<p>I wanted to quickly follow up regarding your automation enquiry.</p>\n\n<p>We'd be happy to discuss how AI automation can help streamline your customer enquiries and lead follow-ups.</p>\n\n<p>If you're still interested, simply reply to this email and we'll be happy to schedule a quick discussion.</p>\n\n<p>Best regards,<br>\nAI Automation Team</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1744,
+        16
+      ],
+      "id": "f6d58fbe-b138-4733-9ac1-2201dd69e5c3",
+      "name": "Send a message1",
+      "webhookId": "4ae9eeeb-e8e2-4792-9bbc-3674e373713a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "as9gtJdT9jN4KLWP",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU",
+          "mode": "list",
+          "cachedResultName": "USER INFORMATION",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email ": "={{ $('On form submission').item.json['email '] }}",
+            "status": "REPLIED"
+          },
+          "matchingColumns": [
+            "email "
+          ],
+          "schema": [
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": " name",
+              "displayName": " name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email ",
+              "displayName": "email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1744,
+        -176
+      ],
+      "id": "fcaba9ce-0573-462b-9065-226ee5ec2a42",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "laWQnEmfWIqDlEO1",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU",
+          "mode": "list",
+          "cachedResultName": "USER INFORMATION",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zfR0scj4TWHU33bptUKP4WpH17kb3xcf20elXjOrRLU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email ": "={{ $('On form submission').item.json['email '] }}",
+            "status": "FOLLOW UP SENT"
+          },
+          "matchingColumns": [
+            "email "
+          ],
+          "schema": [
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": " name",
+              "displayName": " name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email ",
+              "displayName": "email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1952,
+        16
+      ],
+      "id": "66e0450d-3732-4cc2-8087-ebd3560f7b9c",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "laWQnEmfWIqDlEO1",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "993c7bad-e91c-4994-8597-95d7e39341ba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "55af3ff45a0ab1c04a43c30ddf223812190d9637f72823ad34f93c084d1a1978"
+  },
+  "nodeGroups": [],
+  "id": "WKn6qvOQwglhi1Q8",
+  "tags": []
+}
